@@ -12,13 +12,14 @@ import static com.voterapp.utils.DBUtil.getConnection;
 
 public class UserDaoImpl implements UserDAO {
 	private Connection connection;
-	private PreparedStatement pst1, pst2, pst3;
+	private PreparedStatement pst1, pst2, pst3, pst4;
 	
 	public UserDaoImpl() throws SQLException {
 		connection = getConnection();
 		pst1 = connection.prepareStatement("SELECT * FROM users WHERE email = ? AND password = ?");
 		pst2 = connection.prepareStatement("INSERT INTO users (first_name, last_name, email, password, dob, status, role) VALUES (?, ?, ?, ?, ?, 0, 'voter')");
 		pst3 = connection.prepareStatement("SELECT * FROM users WHERE email = ?");
+		pst4 = connection.prepareStatement("UPDATE users SET status = 1 WHERE id = ?");
 		System.out.println("User DAO Created!");
 	}
 	
@@ -56,6 +57,17 @@ public class UserDaoImpl implements UserDAO {
 		}
 		
 		return null;
+	}
+	
+	@Override
+	public String updateVotingStatus(int voterId) throws SQLException {
+		pst4.setInt(1, voterId);
+		int updatedRows = pst4.executeUpdate();
+		if(updatedRows == 1) {
+			return "Voter status updated!";
+		} else {
+			return "Voter status update failed!";
+		}
 	}
 
 	@Override
