@@ -21,6 +21,8 @@ import static com.voterapp.utils.DBUtil.*;
 
 @WebServlet(value = "/authenticate", loadOnStartup = 1)
 public class LoginServlet extends HttpServlet {
+	public static final long serialVersionUID = 1L;
+	
 	private UserDAO userDao;
 	private CandidateDAO candidateDao;
 	
